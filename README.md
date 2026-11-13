@@ -4,6 +4,8 @@ Taskfolio is a PHP and MySQL task tracker built for the RTIH IT internship assig
 
 ![Taskfolio dashboard showing six tasks grouped in the summary by status](screenshots/02-dashboard.png)
 
+Click a task’s status badge to open the [status popup](screenshots/05-change-status.png). Choose **Pending**, **In Progress** or **Completed** to save immediately. The dashboard updates its counts and keeps your current filters. Cancel or press Escape to close the popup.
+
 ## Assignment deliverables
 
 | Level | Implementation |

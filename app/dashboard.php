@@ -29,7 +29,10 @@ function pageLink(int $number, string $search, string $filter): string
 <ul class="tasks">
 <?php foreach ($tasks as $task): ?>
 <li class="row"><div class="details"><h3><?= h($task['title']) ?></h3><p><?= h($task['description']) ?></p></div>
-<div><span class="badge <?= $badge[$task['status']] ?>"><i aria-hidden="true"></i><?= h($task['status']) ?></span></div>
+<div><a class="badge <?= $badge[$task['status']] ?>" href="?page=edit&amp;id=<?= (int)$task['id'] ?>"
+    data-task-id="<?= (int)$task['id'] ?>" data-status="<?= h($task['status']) ?>"
+    aria-label="<?= h($task['status'] . ' — change status for ' . $task['title']) ?>">
+    <i aria-hidden="true"></i><?= h($task['status']) ?></a></div>
 <time datetime="<?= h(str_replace(' ', 'T', $task['created_at']) . 'Z') ?>"><?= h(gmdate('d M Y', strtotime($task['created_at'] . ' UTC'))) ?></time>
 <div class="row-actions"><a href="?page=edit&amp;id=<?= (int)$task['id'] ?>" aria-label="Edit <?= h($task['title']) ?>">Edit</a><a href="?page=delete&amp;id=<?= (int)$task['id'] ?>" aria-label="Delete <?= h($task['title']) ?>">Delete</a></div>
 </li>
@@ -38,3 +41,20 @@ function pageLink(int $number, string $search, string $filter): string
 <?php if ($current > 1): ?><a href="<?= pageLink($current - 1, $search, $filter) ?>">← Previous</a><?php endif; ?>
 <?php if ($current < $pages): ?><a href="<?= pageLink($current + 1, $search, $filter) ?>">Next →</a><?php endif; ?></nav>
 <?php endif; ?></section>
+<?php if ($tasks): ?>
+<dialog class="status-dialog" id="status-dialog" aria-labelledby="status-heading" aria-describedby="status-task">
+    <h2 id="status-heading">Change status</h2>
+    <p id="status-task" class="muted"></p>
+    <form method="post">
+        <?= tokenField() ?>
+        <input type="hidden" name="task_id">
+        <?php foreach (STATUSES as $s): ?>
+        <button type="submit" name="status" value="<?= h($s) ?>" class="status-choice <?= $badge[$s] ?>">
+            <i aria-hidden="true"></i><?= h($s) ?><span aria-hidden="true" class="check">✓</span>
+        </button>
+        <?php endforeach; ?>
+    </form>
+    <form method="dialog"><button class="quiet">Cancel</button></form>
+</dialog>
+<script src="status.js" defer></script>
+<?php endif; ?>

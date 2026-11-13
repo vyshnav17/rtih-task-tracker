@@ -117,14 +117,25 @@ try {
         }
     }
     if ($page === 'dashboard') {
-        if ($post) {
-            header('Allow: GET');
-            failPage(405, 'Use the dashboard filters to find a task.');
-        }
         $search = trim(field($_GET, 'q'));
         $filter = field($_GET, 'status');
         if (mb_strlen($search) > 120 || ($filter !== '' && !in_array($filter, STATUSES, true))) {
             failPage(400, 'Check the search term and status, then try again.');
+        }
+        if ($post) {
+            $id = filter_var(field($_POST, 'task_id'), FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            $status = field($_POST, 'status');
+            if (!$id || !in_array($status, STATUSES, true)) {
+                failPage(422, 'Choose a task and a status from the list.');
+            }
+            $updated = query('UPDATE tasks SET status = ? WHERE id = ? AND user_id = ?', [$status, $id, $owner]);
+            if (!$updated->rowCount() && !query('SELECT id FROM tasks WHERE id = ? AND user_id = ?', [$id, $owner])->fetchColumn()) {
+                failPage(404, 'This task could not be found in your workspace.');
+            }
+            $_SESSION['notice'] = 'Task status saved as ' . $status . '.';
+            $view = ['page' => 'dashboard', 'q' => $search, 'status' => $filter, 'p' => field($_GET, 'p')];
+            header('Location: index.php?' . http_build_query(array_filter($view, 'strlen')), true, 303);
+            exit;
         }
         $counts = array_fill_keys(STATUSES, 0);
         foreach (query('SELECT status, COUNT(*) AS n FROM tasks WHERE user_id = ? GROUP BY status', [$owner]) as $row) {

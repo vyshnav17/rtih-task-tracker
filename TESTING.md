@@ -4,6 +4,8 @@ Tests ran on 13 November 2026 using PHP 8.2.29, MySQL 8.0.43 and Chrome on Windo
 
 | Test | Steps and observed result |
 | --- | --- |
+| Dashboard status popup | Opened the badge with Enter, checked focus on the current status, and dismissed with Escape. Tried Cancel on mobile and selected each status. The change persisted after refresh, counts updated and a task that stopped matching disappeared from the filtered list. Search and filter values were preserved. |
+| Status update permissions | Submitted another account’s task ID, omitted the CSRF token and sent an unknown status. The server returned 404, 403 and 422 respectively. The owner’s original status remained in place. |
 | Schema and PHP syntax | Imported the SQL into a fresh database. Both tables were created. PHP syntax checks passed for all four PHP files. |
 | Registration and sign-in | Created an account, retried the same email and submitted a wrong password. Registration succeeded once, duplicate registration and incorrect credentials returned validation errors, and the correct password opened the dashboard. |
 | Password and session | Inspected the stored value and confirmed it was a bcrypt hash. The session ID changed on successful sign-in. After sign-out, a direct request for the new-task form redirected to sign-in. |
