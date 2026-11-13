@@ -1,0 +1,5 @@
+.env
+.env.*
+*.log
+sess_*
+taskfolio-backup.sql

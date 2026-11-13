@@ -1,12 +1,31 @@
-# Taskfolio
+# Taskfolio · RTIH Task Tracker
 
-Taskfolio is a private task tracker built with core PHP, PDO and MySQL. A registered user can create tasks, update their status, search by title and confirm a deletion. The dashboard shows the creation date in UTC, counts by status and eight results per page.
+Taskfolio is a PHP and MySQL task tracker built for the RTIH IT internship assignment. It completes all three levels. Each registered user has a private dashboard where they can add tasks, track progress and search their own list.
+
+![Taskfolio dashboard showing six tasks grouped in the summary by status](screenshots/02-dashboard.png)
+
+## Assignment deliverables
+
+| Level | Implementation |
+| --- | --- |
+| 1 · Task management | Create, view, edit and delete tasks. Deletion requires confirmation. |
+| 2 · Search and validation | Change status, search titles and combine filters. Both PHP and the browser validate form input. |
+| 3 · Authentication and authorization | Register and sign in. The server checks task ownership, verifies CSRF tokens, binds query parameters and escapes displayed text. |
+
+[Completion note and limitations](COMPLETION.md) · [Test cases and results](TESTING.md) · [Screenshots](screenshots/) · [Database schema](database.sql)
 
 ## Run locally
 
 **Requirements.** PHP 8.1 or later with `pdo_mysql`, `mbstring` and sessions enabled, plus MySQL 8.0. The project was tested with PHP 8.2.29 and MySQL 8.0.43. It uses server-rendered HTML and local CSS. No package installation or asset build is required once PHP and MySQL are available.
 
-1. Extract the ZIP. Open a terminal in the `Taskfolio` directory, alongside `database.sql`. Start MySQL. Confirm PHP is available using `php -v`. Run `php -m` and check for `pdo_mysql` and `mbstring`. If necessary, enable the corresponding extensions in the file reported by `php --ini`.
+1. Clone the repository and open its directory. If using a downloaded ZIP, extract it and open the folder containing `database.sql`.
+
+   ```sh
+   git clone https://github.com/vyshnav17/rtih-task-tracker.git
+   cd rtih-task-tracker
+   ```
+
+   Start MySQL. Confirm PHP is available using `php -v`. Run `php -m` and check for `pdo_mysql` and `mbstring`. If necessary, enable the corresponding extensions in the file reported by `php --ini`.
 2. Open a MySQL client as a local schema administrator. From the project directory, run `mysql -u YOUR_ADMIN_USER -p`, enter the password at the prompt, then run the command below inside MySQL. It creates the `rtih_task_tracker` database and its tables. Import once into a fresh database. In MySQL Workbench you can instead open and execute `database.sql`.
 
    ```sql
